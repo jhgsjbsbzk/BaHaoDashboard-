@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  骑行彩屏仪表 - 主界面
+  还原九号 RideyFUN 智驾系统横屏TFT仪表盘风格
+  深色背景 + 大号数字速度 + 状态栏 + 信息面板
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dashboard"
+    android:orientation="vertical">
+
+    <!-- ========== 顶部状态栏 ========== -->
+    <LinearLayout
+        android:id="@+id/statusBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp">
+
+        <!-- 左侧: READY 状态 -->
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="READY"
+            android:textColor="@color/status_ready"
+            android:textSize="13sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.1" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- 右侧: 时间 + 信号图标 -->
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="08:12"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginEnd="10dp" />
+
+        <!-- GPS信号 -->
+        <ImageView
+            android:id="@+id/ivGpsIcon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_gps_small"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="GPS" />
+
+        <!-- 蓝牙状态 -->
+        <ImageView
+            android:id="@+id/ivBtIcon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_bt_small"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="蓝牙" />
+
+        <!-- 右侧快捷按钮 -->
+        <ImageButton
+            android:id="@+id/btnMode"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_daynight"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
+            android:padding="6dp"
+            android:contentDescription="日间/夜间" />
+
+        <ImageButton
+            android:id="@+id/btnMusic"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_music_small"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
+            android:padding="6dp"
+            android:contentDescription="音乐" />
+
+        <ImageButton
+            android:id="@+id/btnNavigate"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_navigate_small"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
+            android:padding="6dp"
+            android:contentDescription="导航" />
+    </LinearLayout>
+
+    <!-- ========== 主内容区: 速度 + 信息 ========== -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="250"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
+
+        <!-- 左侧路况/氛围灯条：参考九号屏幕侧边竖灯，平地默认黄色 -->
+        <View
+            android:id="@+id/sideLightLeft"
+            android:layout_width="5dp"
+            android:layout_height="118dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_side_light" />
+
+        <!-- 右侧路况/氛围灯条：与左侧同步显示 -->
+        <View
+            android:id="@+id/sideLightRight"
+            android:layout_width="5dp"
+            android:layout_height="118dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_side_light" />
+
+        <!-- 左侧: 超大号速度数字 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|center_vertical"
+            android:orientation="vertical"
+            android:gravity="bottom">
+
+            <!-- 速度数字 + 单位 同行 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:id="@+id/tvSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/speed_number"
+                    android:textSize="140sp"
+                    android:fontFamily="sans-serif-black"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="0dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="18dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="km/h"
+                        android:textColor="@color/text_unit"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <!-- 骑行模式标识 -->
+                    <TextView
+                        android:id="@+id/tvMode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S"
+                        android:textColor="@color/accent_cyan"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif-bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 右侧: 信息面板 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <!-- GPS信号强度 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:id="@+id/tvGpsLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GPS 良好"
+                    android:textColor="@color/status_ready"
+                    android:textSize="13sp"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <!-- 本次里程 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="里程  "
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.0"
+                    android:textColor="@color/text_primary"
+                    android:textSize="22sp"
+                    android:fontFamily="sans-serif-bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" km"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- 骑行时间 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时间  "
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvRideTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/text_primary"
+                    android:textSize="22sp"
+                    android:fontFamily="sans-serif-bold" />
+            </LinearLayout>
+
+            <!-- 功率/电压 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="功率  "
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvPower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0W"
+                    android:textColor="@color/text_primary"
+                    android:textSize="22sp"
+                    android:fontFamily="sans-serif-bold" />
+            </LinearLayout>
+
+            <!-- 电池 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电池  "
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvBattery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="@color/text_primary"
+                    android:textSize="22sp"
+                    android:fontFamily="sans-serif-bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <FrameLayout
+                    android:layout_width="60dp"
+                    android:layout_height="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_battery_bar">
+
+                    <View
+                        android:id="@+id/batteryBar"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/status_ready" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- ========== 底部品牌栏 ========== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="40"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CyclingDashboard"
+            android:textColor="@color/text_dim"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.15" />
+    </LinearLayout>
+
+</LinearLayout>
