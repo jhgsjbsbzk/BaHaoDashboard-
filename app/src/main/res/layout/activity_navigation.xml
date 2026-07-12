@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A0A14">
+
+    <!-- 提示信息 -->
+    <TextView
+        android:id="@+id/tvNavHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="导航功能开发中\n请先使用主仪表盘测速"
+        android:textColor="#7A7A8A"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.5" />
+
+    <!-- 返回按钮 -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|start"
+        android:layout_margin="12dp"
+        android:src="@drawable/ic_back"
+        android:background="@drawable/bg_circle_btn"
+        android:scaleType="centerInside"
+        android:padding="10dp"
+        android:contentDescription="返回" />
+
+    <!-- 角落实时车速 -->
+    <com.cycling.dashboard.ui.MiniSpeedView
+        android:id="@+id/miniSpeedView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp" />
+
+</FrameLayout>
